@@ -23,11 +23,7 @@
 </template>
 
 <script>
-const tracks = [
-  { name: 'Old Friends', artist: 'Jasmine Thompson' },
-  { name: 'Baby Who', artist: 'The Aces' },
-  { name: 'The Cure', artist: 'Lady Gaga' }
-]
+import trackService from './services/track'
 
 export default {
   name: 'app',
@@ -46,7 +42,10 @@ export default {
 
   methods: {
     search () {
-      this.tracks = tracks
+      trackService.search(this.searchQuery)
+        .then(res => {
+          this.tracks = res.results.trackmatches.track
+        })
     }
   }
 }
