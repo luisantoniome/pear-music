@@ -2,9 +2,6 @@
   #app
     pm-header
 
-    pm-notification(v-show="showNotification")
-      p(slot="body") No songs found.
-
     pm-loader(v-show="isLoading")
 
     section.section(v-show="!isLoading")
@@ -20,9 +17,9 @@
               a.button.is-info.is-large(@click="search") Search
             .control
               a.button.is-danger.is-large &times;
-      .container
-        p
-          small {{ searchMessage }}              
+
+      pm-notification(v-show="notification.show", :type="notification.type")
+        p(slot="body") {{ notification.message }}
               
       section.section
         .container
@@ -63,22 +60,20 @@ export default {
       searchQuery: '',
       tracks: [],
       isLoading: false,
-      showNotification: false,
+      notification: {
+        show: false,
+        message: '',
+        type: ''
+      },
       selectedTrack: ''
     }
   },
 
-  computed: {
-    searchMessage () {
-      return `Found: ${this.tracks.length}`
-    }
-  },
-
   watch: {
-    showNotification () {
-      if (this.showNotification) {
+    'notification.type': function () {
+      if (this.notification.type === 'is-danger') {
         setTimeout(() => {
-          this.showNotification = false
+          this.notification.show = false
         }, 3000)
       }
     }
@@ -92,7 +87,12 @@ export default {
 
       trackService.search(this.searchQuery)
         .then(res => {
-          this.showNotification = res.results['opensearch:totalResults'] === '0'
+          const results = res.results['opensearch:totalResults']
+
+          this.notification.show = true
+          this.notification.message = (results === '0') ? 'No songs found' : `${results} songs found`
+          this.notification.type = (results === '0') ? 'is-danger' : 'is-success'
+
           this.tracks = res.results.trackmatches.track
           this.isLoading = false
         })
