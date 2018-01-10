@@ -5,7 +5,7 @@
     pm-loader(v-show="isLoading")
 
     section.section(v-show="!isLoading")
-      nav.nav.has-shadow
+      nav.nav
         .container
           .field.has-addons
             .control.is-expanded
@@ -25,7 +25,11 @@
         .container
           .columns.is-multiline
             .column.is-one-quarter(v-for="t in tracks")
-              pm-track(:track="t")
+              pm-track(
+                :class="{ 'is-active': t.url == selectedTrack }",
+                :track="t",
+                @select="setSelectedTrack"
+              )
 
     pm-footer
 </template>
@@ -50,7 +54,8 @@ export default {
     return {
       searchQuery: '',
       tracks: [],
-      isLoading: false
+      isLoading: false,
+      selectedTrack: ''
     }
   },
 
@@ -71,11 +76,19 @@ export default {
           this.tracks = res.results.trackmatches.track
           this.isLoading = false
         })
+    },
+
+    setSelectedTrack (url) {
+      this.selectedTrack = url
     }
   }
 }
 </script>
 
 <style lang="scss">
-  @import './scss/main.scss'
+  @import './scss/main.scss';
+
+  .is-active {
+    border: 3px solid #23d160;
+  }
 </style>
