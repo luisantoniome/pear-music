@@ -2,6 +2,9 @@
   #app
     pm-header
 
+    pm-notification(v-show="showNotification")
+      p(slot="body") No songs found.
+
     pm-loader(v-show="isLoading")
 
     section.section(v-show="!isLoading")
@@ -36,10 +39,14 @@
 
 <script>
 import trackService from '@/services/track'
+
 import PmHeader from '@/components/layout/Header.vue'
 import PmFooter from '@/components/layout/Footer.vue'
+
 import PmTrack from '@/components/Track.vue'
+
 import PmLoader from '@/components/shared/Loader.vue'
+import PmNotification from '@/components/shared/Notification.vue'
 
 export default {
   name: 'app',
@@ -48,13 +55,15 @@ export default {
     PmHeader,
     PmFooter,
     PmTrack,
-    PmLoader
+    PmLoader,
+    PmNotification
   },
   data () {
     return {
       searchQuery: '',
       tracks: [],
       isLoading: false,
+      showNotification: false,
       selectedTrack: ''
     }
   },
@@ -62,6 +71,16 @@ export default {
   computed: {
     searchMessage () {
       return `Found: ${this.tracks.length}`
+    }
+  },
+
+  watch: {
+    showNotification () {
+      if (this.showNotification) {
+        setTimeout(() => {
+          this.showNotification = false
+        }, 3000)
+      }
     }
   },
 
@@ -73,6 +92,7 @@ export default {
 
       trackService.search(this.searchQuery)
         .then(res => {
+          this.showNotification = res.results['opensearch:totalResults'] === '0'
           this.tracks = res.results.trackmatches.track
           this.isLoading = false
         })
