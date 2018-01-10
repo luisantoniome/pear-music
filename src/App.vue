@@ -21,24 +21,26 @@
               
       section.section
         .container
-          .columns
-            .column(v-for="t in tracks")
-              | {{ t.name }} - {{ t.artist }}
+          .columns.is-multiline
+            .column.is-one-quarter(v-for="t in tracks")
+              pm-track(:track="t")
 
     pm-footer
 </template>
 
 <script>
-import trackService from './services/track'
-import PmHeader from './components/layout/Header.vue'
-import PmFooter from './components/layout/Footer.vue'
+import trackService from '@/services/track'
+import PmHeader from '@/components/layout/Header.vue'
+import PmFooter from '@/components/layout/Footer.vue'
+import PmTrack from '@/components/Track.vue'
 
 export default {
   name: 'app',
 
   components: {
     PmHeader,
-    PmFooter
+    PmFooter,
+    PmTrack
   },
   data () {
     return {
