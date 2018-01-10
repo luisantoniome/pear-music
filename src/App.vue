@@ -2,7 +2,9 @@
   #app
     pm-header
 
-    section.section
+    pm-loader(v-show="isLoading")
+
+    section.section(v-show="!isLoading")
       nav.nav.has-shadow
         .container
           .field.has-addons
@@ -33,6 +35,7 @@ import trackService from '@/services/track'
 import PmHeader from '@/components/layout/Header.vue'
 import PmFooter from '@/components/layout/Footer.vue'
 import PmTrack from '@/components/Track.vue'
+import PmLoader from '@/components/shared/Loader.vue'
 
 export default {
   name: 'app',
@@ -40,12 +43,14 @@ export default {
   components: {
     PmHeader,
     PmFooter,
-    PmTrack
+    PmTrack,
+    PmLoader
   },
   data () {
     return {
       searchQuery: '',
-      tracks: []
+      tracks: [],
+      isLoading: false
     }
   },
 
@@ -58,9 +63,13 @@ export default {
   methods: {
     search () {
       if (!this.searchQuery) { return }
+
+      this.isLoading = true
+
       trackService.search(this.searchQuery)
         .then(res => {
           this.tracks = res.results.trackmatches.track
+          this.isLoading = false
         })
     }
   }
