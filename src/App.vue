@@ -26,7 +26,7 @@
           .columns.is-multiline
             .column.is-one-quarter(v-for="t in tracks")
               pm-track(
-                :class="{ 'is-active': t.url == selectedTrack }",
+                :class="{ 'is-active': t.id == selectedTrack }",
                 :track="t",
                 @select="setSelectedTrack"
               )
@@ -87,19 +87,19 @@ export default {
 
       trackService.search(this.searchQuery)
         .then(res => {
-          const results = res.results['opensearch:totalResults']
+          const results = res.tracks.total
 
           this.notification.show = true
-          this.notification.message = (results === '0') ? 'No songs found' : `${results} songs found`
-          this.notification.type = (results === '0') ? 'is-danger' : 'is-success'
+          this.notification.message = (results === 0) ? 'No songs found' : `${results} songs found`
+          this.notification.type = (results === 0) ? 'is-danger' : 'is-success'
 
-          this.tracks = res.results.trackmatches.track
+          this.tracks = res.tracks.items
           this.isLoading = false
         })
     },
 
-    setSelectedTrack (url) {
-      this.selectedTrack = url
+    setSelectedTrack (id) {
+      this.selectedTrack = id
     }
   }
 }
