@@ -1,7 +1,8 @@
 <template lang="pug">
   main
 
-    pm-loader(v-show="isLoading")
+    transition(name="move")
+      pm-loader(v-show="isLoading")
 
     section.section(v-show="!isLoading")
       nav.nav
@@ -19,8 +20,9 @@
             .control
               a.button.is-danger.is-large &times;
 
-      pm-notification(v-show="notification.show", :type="notification.type")
-        p(slot="body") {{ notification.message }}
+      transition(name="move")
+        pm-notification(v-show="notification.show", :type="notification.type")
+          p(slot="body") {{ notification.message }}
               
       section.section
         .container
