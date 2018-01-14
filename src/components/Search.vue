@@ -11,7 +11,9 @@
               input.input.is-large(
                 type="text",
                 placeholder="Search songs",
-                v-model="searchQuery")
+                v-model="searchQuery",
+                @keyup.enter="search"
+              )
             .control
               a.button.is-info.is-large(@click="search") Search
             .control
