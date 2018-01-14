@@ -27,6 +27,7 @@
           .columns.is-multiline
             .column.is-one-quarter(v-for="t in tracks")
               pm-track(
+                v-blur="t.preview_url"
                 :class="{ 'is-active': t.id == selectedTrack }",
                 :track="t",
                 @select="setSelectedTrack"
@@ -78,6 +79,7 @@ export default {
       if (!this.searchQuery) { return }
 
       this.isLoading = true
+      this.tracks = []
 
       trackService.search(this.searchQuery)
         .then(res => {
