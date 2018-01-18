@@ -6,13 +6,13 @@
         figure.media-left
           p.image
             img(:src="track.album.images[1]['url']")
-          p
+          p.button-bar
             button.button.is-primary.is-large
               span.icon(@click="selectTrack") ▶
       .column.is-8
         .panel
           .panel-heading
-            h1.title {{ track.name }} ({{ track.duration_ms | ms-to-mm }})
+            h1.title {{ trackTitle }} ({{ track.duration_ms | ms-to-mm }})
           .panel-block
             article.media
               .media-content
@@ -32,8 +32,9 @@
 </template>
 
 <script>
+  import { mapState, mapActions, mapGetters } from 'vuex'
+  
   import trackMixin from '@/mixins/track'
-  import trackService from '@/services/track'
   import PmLoader from '@/components/shared/Loader.vue'
 
   export default {
@@ -44,21 +45,30 @@
 
     data () {
       return {
-        track: {},
         isLoading: false
       }
+    },
+
+    computed: {
+      ...mapState(['track']),
+      ...mapGetters(['trackTitle'])
     },
 
     created () {
       const id = this.$route.params.id
 
-      this.isLoading = true
+      if (!this.track || !this.track.id || this.track.id !== id) {
+        this.isLoading = true
 
-      trackService.getById(id)
-        .then(res => {
-          this.track = res
-          this.isLoading = false
-        })
+        this.getTrackById({ id })
+          .then(() => {
+            this.isLoading = false
+          })
+      }
+    },
+
+    methods: {
+      ...mapActions(['getTrackById'])
     }
   }
 </script>
@@ -66,5 +76,9 @@
 <style lang="scss" scoped>
   .columns {
     margin: 20px;
+  }
+
+  .button-bar {
+    margin-top: 20px;
   }
 </style>
