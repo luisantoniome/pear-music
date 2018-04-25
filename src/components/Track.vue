@@ -11,11 +11,10 @@
             img(:src="track.album.images[2]['url']")
         .media-content
           p.title.is-6
-            strong {{ track.name }}
+            strong {{ track.name }} ({{ track.duration_ms | ms-to-mm }})
           p.subtitle.is-6 {{ track.artists[0]['name'] }}
       
       .content
-        small {{ track.duration_ms | ms-to-mm }}
         nav.level
           .level-left
             button.button.is-primary.level-item(@click="selectTrack")
