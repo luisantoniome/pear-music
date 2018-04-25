@@ -6,15 +6,15 @@
 
 > Home
 
-![Home](http://res.cloudinary.com/luisantoniome/image/upload/v1524683113/01-home_jz9ypc.png)
+![Home](http://res.cloudinary.com/luisantoniome/image/upload/c_scale,w_700/v1524683113/01-home_jz9ypc.png)
 
 > Search Results
 
-![Search Results](http://res.cloudinary.com/luisantoniome/image/upload/v1524683176/02-search-results_gszbsf.png)
+![Search Results](http://res.cloudinary.com/luisantoniome/image/upload/c_scale,w_700/v1524683176/02-search-results_gszbsf.png)
 
 > Track Detail
 
-![Track Detail](http://res.cloudinary.com/luisantoniome/image/upload/v1524683176/03-track-detail_t09g8o.png)
+![Track Detail](http://res.cloudinary.com/luisantoniome/image/upload/c_scale,w_700/v1524683176/03-track-detail_t09g8o.png)
 
 ## Build Setup
 
